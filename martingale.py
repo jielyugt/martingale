@@ -30,6 +30,7 @@ GT ID: 903329676
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import shutil
 
 # print the whole matrix without scientific formatting
 np.set_printoptions(threshold = 10000000000000, suppress = True)
@@ -48,16 +49,19 @@ def get_spin_result(win_prob):
   		   	  			  	 		  		  		    	 		 		   		 		  
 def test_code():  		   	  			  	 		  		  		    	 		 		   		 		  
 	win_prob = 9/19 # set appropriately to the probability of a win  		   	  			  	 		  		  		    	 		 		   		 		  
-	np.random.seed(gtid()) # do this only once  		   	  			  	 		  		  		    	 		 		   		 		  
+	np.random.seed(gtid()) # do this only once  
+	bank_roll = 256			# for exp2 		   	  			  	 		  		  		    	 		 		   		 		  
 
 	# testing code
 	exp1_figure1(win_prob)	  	 		  		  		    	 		 		   		 		  
 	exp1_figure2_and_figure3(win_prob)
+	exp2_figure4_and_figure5(win_prob, bank_roll)
 
 # for exp1 bankroll will be None
 # returns a 1d array of length 300
 def simulator(win_prob, has_bankroll, bankroll):
-	#result_array = np.zeros((301))
+
+	# init the array with 80 so that after we win early, we don't need to populate the rest
 	result_array = np.full((301),80)	
 	episode_winnings = 0
 
@@ -66,7 +70,7 @@ def simulator(win_prob, has_bankroll, bankroll):
 		won = False
 		bet_amount = 1
 		while not won:
-			if count > 301:
+			if count >= 301:
 				return result_array
 			result_array[count] = episode_winnings
 			count += 1
@@ -82,7 +86,9 @@ def simulator(win_prob, has_bankroll, bankroll):
 
 					# if last round went all in
 					if episode_winnings == -bankroll:
-						return episode_winnings
+						# populate the rest of array
+						result_array[count:] = episode_winnings
+						return result_array
 
 					if episode_winnings - bet_amount < -bankroll:
 						# all in the left
@@ -94,7 +100,51 @@ def simulator(win_prob, has_bankroll, bankroll):
 
 	return result_array
 				
-			
+def exp2_figure4_and_figure5(win_prob, bank_roll):
+	result_array = np.zeros((1000, 301))
+	for index in range(1000):
+		curr_episode = simulator(win_prob, True, bank_roll)
+		result_array[index] = curr_episode
+
+	### plot figure 4
+	mean_array = np.mean(result_array, axis = 0)
+	std = np.std(result_array, axis = 0)
+	mean_plus_array = mean_array + std
+	mean_minus_array = mean_array - std
+
+	plt.axis([0, 300, -256, 100])
+	plt.title("Figure 4 - means of 1000 trials w/ $" + str(bank_roll) + " bankroll")
+	plt.xlabel("Number of Trials")
+	plt.ylabel("Total Winnings")
+
+	plt.plot(mean_array, label = "mean")
+	plt.plot(mean_plus_array, label = "mean+std")
+	plt.plot(mean_minus_array, label = "mean-std")
+
+	plt.legend()
+	plt.savefig("plots/figure4.png")
+	plt.clf()
+
+	### plot figure 5
+	median_array = np.median(result_array, axis = 0)
+	std = np.std(result_array, axis = 0)
+	median_plus_array = median_array + std
+	median_minus_array = median_array - std
+
+	plt.axis([0, 300, -256, 100])
+	plt.title("Figure 5 - medians of 1000 trials w/ $" + str(bank_roll) + " bankroll")
+	plt.xlabel("Number of Trials")
+	plt.ylabel("Total Winnings")
+	x_axis = np.arange(0,300)
+
+	plt.plot(median_array, label = "median")
+	plt.plot(median_plus_array, label = "median+std")
+	plt.plot(median_minus_array, label = "median-std")
+	plt.legend()
+	plt.savefig("plots/figure5.png")
+	plt.clf()
+
+
 
 def exp1_figure1(win_prob):
 
@@ -177,15 +227,13 @@ def exp1_figure2_and_figure3(win_prob):
 	plt.plot(median_minus_array, label = "median-std")
 	plt.legend()
 	plt.savefig("plots/figure3.png")
-
-"""
-def exp1_3():
-	# run simulator 10x and track winnings 
-		# starting from 0
-	# plot all 10 runs on one chart using matplotlib functions
-		# horizontal axis should range from 0 to 300, vertical axis from -256 to +100
-"""
+	plt.clf()
 
 if __name__ == "__main__":
-	os.makedirs("plots")  		   	  			  	 		  		  		    	 		 		   		 		  
+
+	try:
+		shutil.rmtree("plots")
+	finally:
+		os.makedirs("plots")
+		   	  			  	 		  		  		    	 		 		   		 		  
 	test_code()  		   	  			  	 		  		  		    	 		 		   		 		  
