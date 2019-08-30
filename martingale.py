@@ -29,6 +29,7 @@ GT ID: 903329676
 # https://matplotlib.org/3.1.1/api/pyplot_summary.html 	  		  		    	 		 		   		 		  
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 # print the whole matrix without scientific formatting
 np.set_printoptions(threshold = 10000000000000, suppress = True)
@@ -50,8 +51,8 @@ def test_code():
 	np.random.seed(gtid()) # do this only once  		   	  			  	 		  		  		    	 		 		   		 		  
 
 	# testing code
-	#print(exp1_1(win_prob))		  	 		  		  		    	 		 		   		 		  
-	print(exp1_2(win_prob))
+	exp1_figure1(win_prob)	  	 		  		  		    	 		 		   		 		  
+	exp1_figure2_and_figure3(win_prob)
 
 # for exp1 bankroll will be None
 # returns a 1d array of length 300
@@ -95,7 +96,7 @@ def simulator(win_prob, has_bankroll, bankroll):
 				
 			
 
-def exp1_1(win_prob):
+def exp1_figure1(win_prob):
 
 	# run simulator 10x and plot winnings 
 		# starting from 0
@@ -105,10 +106,9 @@ def exp1_1(win_prob):
 		# 10 lines in total
 
 	plt.axis([0, 300, -256, 100])
-	plt.title("Figure 1")
-	plt.xlabel("Bets")
-	plt.ylabel("Total Winning")
-	x_axis = np.arange(0,300)
+	plt.title("Figure 1 - 10 trials w/ infinite bankroll")
+	plt.xlabel("Number of Trials")
+	plt.ylabel("Total Winnings")
 
 	#result_array = np.zeros((10, 301))
 	for index in range(10):
@@ -116,10 +116,11 @@ def exp1_1(win_prob):
 		plt.plot(curr_episode)
 		#result_array[index] = curr_episode
 	
-	plt.show() # need to change to save later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	plt.savefig("plots/figure1.png")
+	plt.clf()
 	#return result_array
 
-def exp1_2(win_prob):
+def exp1_figure2_and_figure3(win_prob):
 	
 	# run simulator 1000x and plot the mean value of winnings
 		# starting from 0
@@ -127,28 +128,55 @@ def exp1_2(win_prob):
 	# plot all 1000 runs and +- sd on one chart using matplotlib functions
 		# horizontal axis should range from 0 to 300, vertical axis from -256 to +100
 		# three lines in total
-	
-	plt.axis([0, 300, -256, 100])
-	plt.title("Figure 2")
-	plt.xlabel("Bets")
-	plt.ylabel("Total Winning")
-	x_axis = np.arange(0,300)
-	
+		
 	result_array = np.zeros((1000, 301))
 	for index in range(1000):
 		curr_episode = simulator(win_prob, False, None)
 		result_array[index] = curr_episode
 	
-	mean_array = result_array.mean(axis=0)
-	std = mean_array.std()
+	### plot figure 2
+
+	# 1. calculations
+	mean_array = np.mean(result_array, axis = 0)
+	std = np.std(result_array, axis = 0)
 	mean_plus_array = mean_array + std
 	mean_minus_array = mean_array - std
 
-	plt.plot(mean_array)
-	plt.plot(mean_plus_array)
-	plt.plot(mean_minus_array)
+	# 2. plot setup
+	plt.axis([0, 300, -256, 100])
+	plt.title("Figure 2 - means of 1000 trials w/ infinite bankroll")
+	plt.xlabel("Number of Trials")
+	plt.ylabel("Total Winnings")
 
-	plt.show()
+	# 3. plotting!
+	plt.plot(mean_array, label = "mean")
+	plt.plot(mean_plus_array, label = "mean+std")
+	plt.plot(mean_minus_array, label = "mean-std")
+
+	# 4. saving and clearing
+	plt.legend()
+	plt.savefig("plots/figure2.png")
+	plt.clf()
+
+
+	### plot figure 3
+	
+	median_array = np.median(result_array, axis = 0)
+	std = np.std(result_array, axis = 0)
+	median_plus_array = median_array + std
+	median_minus_array = median_array - std
+
+	plt.axis([0, 300, -256, 100])
+	plt.title("Figure 3 - medians of 1000 trials w/ infinite bankroll")
+	plt.xlabel("Number of Trials")
+	plt.ylabel("Total Winnings")
+	x_axis = np.arange(0,300)
+
+	plt.plot(median_array, label = "median")
+	plt.plot(median_plus_array, label = "median+std")
+	plt.plot(median_minus_array, label = "median-std")
+	plt.legend()
+	plt.savefig("plots/figure3.png")
 
 """
 def exp1_3():
@@ -158,5 +186,6 @@ def exp1_3():
 		# horizontal axis should range from 0 to 300, vertical axis from -256 to +100
 """
 
-if __name__ == "__main__":  		   	  			  	 		  		  		    	 		 		   		 		  
-    test_code()  		   	  			  	 		  		  		    	 		 		   		 		  
+if __name__ == "__main__":
+	os.makedirs("plots")  		   	  			  	 		  		  		    	 		 		   		 		  
+	test_code()  		   	  			  	 		  		  		    	 		 		   		 		  
