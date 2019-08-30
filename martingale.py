@@ -24,11 +24,14 @@ Student Name: Jie Lyu
 GT User ID: jlyu31	   	  			  	 		  		  		    	 		 		   		 		  
 GT ID: 903329676	   	  			  	 		  		  		    	 		 		   		 		  
 """  		   	  			  	 		  		  		    	 		 		   		 		  
-		   	  			  	 		  		  		    	 		 		   		 		  
+
+# matplotlib.pyplot API overview
+# https://matplotlib.org/3.1.1/api/pyplot_summary.html 	  		  		    	 		 		   		 		  
 import numpy as np
+import matplotlib.pyplot as plt
 
 # print the whole matrix without scientific formatting
-np.set_printoptions(threshold = np.nan, suppress = True)		   	  			  	 		  		  		    	 		 		   		 		  
+np.set_printoptions(threshold = 10000000000000, suppress = True)
   		   	  			  	 		  		  		    	 		 		   		 		  
 def author():  		   	  			  	 		  		  		    	 		 		   		 		  
         return 'jlyu31' 		   	  			  	 		  		  		    	 		 		   		 		  
@@ -45,17 +48,16 @@ def get_spin_result(win_prob):
 def test_code():  		   	  			  	 		  		  		    	 		 		   		 		  
 	win_prob = 9/19 # set appropriately to the probability of a win  		   	  			  	 		  		  		    	 		 		   		 		  
 	np.random.seed(gtid()) # do this only once  		   	  			  	 		  		  		    	 		 		   		 		  
-	#print(get_spin_result(win_prob)) # test the roulette spin     
 
-	print(exp1_1(win_prob))
-	  			  	 		  		  		    	  			  	 		  		  		    	 		 		   		 		  
-		    	 		 		   		 		     	  			  	 		  		  		    	 		 		   		 		  
-	# add your code here to implement the experiments
+	# testing code
+	#print(exp1_1(win_prob))		  	 		  		  		    	 		 		   		 		  
+	print(exp1_2(win_prob))
 
 # for exp1 bankroll will be None
 # returns a 1d array of length 300
 def simulator(win_prob, has_bankroll, bankroll):
-	result_array = np.zeros((301))
+	#result_array = np.zeros((301))
+	result_array = np.full((301),80)	
 	episode_winnings = 0
 
 	count = 0
@@ -94,12 +96,6 @@ def simulator(win_prob, has_bankroll, bankroll):
 			
 
 def exp1_1(win_prob):
-	result_array = np.zeros((10, 301))
-
-	for index in range(10):
-		result_array[index] = simulator(win_prob, False, None)
-
-	return result_array
 
 	# run simulator 10x and plot winnings 
 		# starting from 0
@@ -108,15 +104,53 @@ def exp1_1(win_prob):
 		# horizontal axis should range from 0 to 300, vertical axis from -256 to +100
 		# 10 lines in total
 
-"""
-def exp1_2():
+	plt.axis([0, 300, -256, 100])
+	plt.title("Figure 1")
+	plt.xlabel("Bets")
+	plt.ylabel("Total Winning")
+	x_axis = np.arange(0,300)
+
+	#result_array = np.zeros((10, 301))
+	for index in range(10):
+		curr_episode = simulator(win_prob, False, None)
+		plt.plot(curr_episode)
+		#result_array[index] = curr_episode
+	
+	plt.show() # need to change to save later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	#return result_array
+
+def exp1_2(win_prob):
+	
 	# run simulator 1000x and plot the mean value of winnings
 		# starting from 0
 		# 3 arrays (mean, mean +sd, mean -sd) needed for graph
 	# plot all 1000 runs and +- sd on one chart using matplotlib functions
 		# horizontal axis should range from 0 to 300, vertical axis from -256 to +100
 		# three lines in total
+	
+	plt.axis([0, 300, -256, 100])
+	plt.title("Figure 2")
+	plt.xlabel("Bets")
+	plt.ylabel("Total Winning")
+	x_axis = np.arange(0,300)
+	
+	result_array = np.zeros((1000, 301))
+	for index in range(1000):
+		curr_episode = simulator(win_prob, False, None)
+		result_array[index] = curr_episode
+	
+	mean_array = result_array.mean(axis=0)
+	std = mean_array.std()
+	mean_plus_array = mean_array + std
+	mean_minus_array = mean_array - std
 
+	plt.plot(mean_array)
+	plt.plot(mean_plus_array)
+	plt.plot(mean_minus_array)
+
+	plt.show()
+
+"""
 def exp1_3():
 	# run simulator 10x and track winnings 
 		# starting from 0
