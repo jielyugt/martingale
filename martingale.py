@@ -33,8 +33,6 @@ GT ID: 903329676
 
 import numpy as np
 import matplotlib.pyplot as plt
-import os
-import shutil
   		   	  			  	 		  		  		    	 		 		   		 		  
 def author():  		   	  			  	 		  		  		    	 		 		   		 		  
         return 'jlyu31' 		   	  			  	 		  		  		    	 		 		   		 		  
@@ -128,7 +126,7 @@ def exp1_figure1(win_prob):
 		plt.plot(curr_episode)
 		#result_array[index] = curr_episode
 	
-	plt.savefig("plots/figure1.png")
+	plt.savefig("figure1.png")
 	plt.clf()
 	#return result_array
 
@@ -167,7 +165,7 @@ def exp1_figure2_and_figure3(win_prob):
 
 	# 4. saving and clearing
 	plt.legend()
-	plt.savefig("plots/figure2.png")
+	plt.savefig("figure2.png")
 	plt.clf()
 
 
@@ -188,7 +186,7 @@ def exp1_figure2_and_figure3(win_prob):
 	plt.plot(median_plus_array, label = "median+std")
 	plt.plot(median_minus_array, label = "median-std")
 	plt.legend()
-	plt.savefig("plots/figure3.png")
+	plt.savefig("figure3.png")
 	plt.clf()
 
 def exp2_figure4_and_figure5(win_prob, bank_roll):
@@ -213,7 +211,7 @@ def exp2_figure4_and_figure5(win_prob, bank_roll):
 	plt.plot(mean_minus_array, label = "mean-std")
 
 	plt.legend()
-	plt.savefig("plots/figure4.png")
+	plt.savefig("figure4.png")
 	plt.clf()
 
 	### plot figure 5
@@ -232,17 +230,11 @@ def exp2_figure4_and_figure5(win_prob, bank_roll):
 	plt.plot(median_plus_array, label = "median+std")
 	plt.plot(median_minus_array, label = "median-std")
 	plt.legend()
-	plt.savefig("plots/figure5.png")
+	plt.savefig("figure5.png")
 	plt.clf()
 
 
 if __name__ == "__main__":
-
-	# make a sub-directory for plots
-	try:
-		shutil.rmtree("plots")
-	finally:
-		os.makedirs("plots")
 
 	# print the whole matrix without scientific formatting
 	# np.set_printoptions(threshold = 10000000000000, suppress = True)
