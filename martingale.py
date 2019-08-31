@@ -205,7 +205,13 @@ def exp2_figure4_and_figure5(win_prob, bank_roll):
 		curr_episode = simulator(win_prob, True, bank_roll)
 		result_array[index] = curr_episode
 	
-	print(result_array[:, -1])
+	"""
+	end_array = result_array[:, -1]
+	print(end_array)
+	print(list(end_array).count(80))
+	print(list(end_array).count(-256))
+	"""
+
 
 	### plot figure 4
 	mean_array = np.mean(result_array, axis = 0)

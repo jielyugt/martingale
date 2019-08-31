@@ -22,3 +22,4 @@ For exmaple, in figure 3, as the number of trials increases, the median + std an
 4.
 #get the 1000 results and do a simple survey
 #use probability to calculate the probability to loose x censecutive rounds
+60.5% (605 out of 1000) reached $80 and 39.5% (395 out of 1000) reached $-256 at the end of 1000 trials
