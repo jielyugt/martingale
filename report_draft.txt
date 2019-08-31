@@ -1,0 +1,24 @@
+Report
+
+1.
+The probability is almost 100% (0.999999... in theory). 
+In theory, with the martingale strategy, every win will add $1 to the total winnings. 
+So the probability of winning $80 is the same as winning 80 times within 1000 times of spins.
+In the case of american roulette, the change of winning at each spin is 9/19.
+So, the culmulative probability of winning at least 80 times out of 1000 spins is 1 - [nCr(1000,79) * (9/19)^79 * (10/19)^921 + nCr(1000,78) * (9/19)^78 * (10/19)^922 + ... + nCr(1000,0) * (9/19)^0 * (10/19)^1000], which > 0.999999
+Actually, even if the number of trials is limited to 230, the probability is > 0.9999
+Our emperical results also supports this claim. In the 1000 episodes simulated, every single one of them reached a winnning of $80 by the end of 1000 episodes.
+Almost all of them reaches $80 winning cap by the first 230 trials
+
+2. 
+With a probability of winning at 9/19, after 1000 trials the expected number of winnning is about 474. 
+For the martingale strategy, each time one wins, one adds $1 to the total winnings.
+So the expected winning is around $474
+
+3.
+No it does not. It is obvious from the graph, the standard deviation does not converge. 
+For exmaple, in figure 3, as the number of trials increases, the median + std and median - std line does not settle down to be parallel with the median until all of the episodes reaches the winning cap.
+
+4.
+#get the 1000 results and do a simple survey
+#use probability to calculate the probability to loose x censecutive rounds

@@ -23,13 +23,26 @@ GT honor code violation.
 Student Name: Jie Lyu		   	  			  	 		  		  		    	 		 		   		 		  
 GT User ID: jlyu31	   	  			  	 		  		  		    	 		 		   		 		  
 GT ID: 903329676	   	  			  	 		  		  		    	 		 		   		 		  
-"""  		   	  			  	 		  		  		    	 		 		   		 		  
+"""  	
 
-# Project 1 Homepage
+
+
+# ===================================================================================
+# Useful links 
+
+# project 1 Homepage
 # http://quantsoftware.gatech.edu/Fall_2019_Project_1:_Martingale
 
 # matplotlib.pyplot API overview
 # https://matplotlib.org/3.1.1/api/pyplot_summary.html 	  
+
+# bionomial probability calculator
+# https://www.stattrek.com/online-calculator/binomial.aspx
+
+
+
+# ===================================================================================
+# Libaraies and caller functions 
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -50,20 +63,20 @@ def test_code():
 	win_prob = 9/19		   	  			  	 		  		  		    	 		 		   		 		  
 	np.random.seed(gtid())  
 	bank_roll = 256   	  			  	 		  		  		    	 		 		   		 		  
-
-	exp1_figure1(win_prob)	  	 		  		  		    	 		 		   		 		  
-	exp1_figure2_and_figure3(win_prob)
+	
+	#exp1_figure1(win_prob)	  	 		  		  		    	 		 		   		 		  
+	#exp1_figure2_and_figure3(win_prob)
 	exp2_figure4_and_figure5(win_prob, bank_roll)
 
 
+# ===================================================================================
+# The game simulator
 
-
-
-# returns a 1d array of length 301
+# returns a 1d array of length 1001
 def simulator(win_prob, has_bankroll, bankroll):
 
 	# init the array with 80 so that after we win early, we don't need to populate the rest
-	result_array = np.full((301),80)	
+	result_array = np.full((1001),80)	
 	episode_winnings = 0
 
 	count = 0
@@ -71,11 +84,10 @@ def simulator(win_prob, has_bankroll, bankroll):
 		won = False
 		bet_amount = 1
 		while not won:
-			if count >= 301:
+			if count >= 1001:
 				return result_array
 			result_array[count] = episode_winnings
 			count += 1
-			#print(episode_winnings, bet_amount)
 			won = get_spin_result(win_prob)
 			if won:
 				episode_winnings += bet_amount
@@ -94,17 +106,13 @@ def simulator(win_prob, has_bankroll, bankroll):
 					if episode_winnings - bet_amount < -bankroll:
 						# all in the left
 						bet_amount = bankroll + episode_winnings
-
-	# print the final winning
-	if episode_winnings >= 80 and count <= 301:
-		result_array[count] = episode_winnings
-
+	
 	return result_array
 
 
 
-
-
+# ===================================================================================
+# Make figure 1 to 6 
 
 def exp1_figure1(win_prob):
 
@@ -120,7 +128,6 @@ def exp1_figure1(win_prob):
 	plt.xlabel("Number of Trials")
 	plt.ylabel("Total Winnings")
 
-	#result_array = np.zeros((10, 301))
 	for index in range(10):
 		curr_episode = simulator(win_prob, False, None)
 		plt.plot(curr_episode)
@@ -139,10 +146,14 @@ def exp1_figure2_and_figure3(win_prob):
 		# horizontal axis should range from 0 to 300, vertical axis from -256 to +100
 		# three lines in total
 		
-	result_array = np.zeros((1000, 301))
+	result_array = np.zeros((1000, 1001))
 	for index in range(1000):
 		curr_episode = simulator(win_prob, False, None)
 		result_array[index] = curr_episode
+	
+	# print the last element of every episode
+	print(result_array[:, -1])
+
 	
 	### plot figure 2
 
@@ -180,7 +191,6 @@ def exp1_figure2_and_figure3(win_prob):
 	plt.title("Figure 3 - medians of 1000 trials w/ infinite bankroll")
 	plt.xlabel("Number of Trials")
 	plt.ylabel("Total Winnings")
-	x_axis = np.arange(0,300)
 
 	plt.plot(median_array, label = "median")
 	plt.plot(median_plus_array, label = "median+std")
@@ -190,10 +200,12 @@ def exp1_figure2_and_figure3(win_prob):
 	plt.clf()
 
 def exp2_figure4_and_figure5(win_prob, bank_roll):
-	result_array = np.zeros((1000, 301))
+	result_array = np.zeros((1000, 1001))
 	for index in range(1000):
 		curr_episode = simulator(win_prob, True, bank_roll)
 		result_array[index] = curr_episode
+	
+	print(result_array[:, -1])
 
 	### plot figure 4
 	mean_array = np.mean(result_array, axis = 0)
@@ -224,7 +236,6 @@ def exp2_figure4_and_figure5(win_prob, bank_roll):
 	plt.title("Figure 5 - medians of 1000 trials w/ $" + str(bank_roll) + " bankroll")
 	plt.xlabel("Number of Trials")
 	plt.ylabel("Total Winnings")
-	x_axis = np.arange(0,300)
 
 	plt.plot(median_array, label = "median")
 	plt.plot(median_plus_array, label = "median+std")
@@ -237,6 +248,6 @@ def exp2_figure4_and_figure5(win_prob, bank_roll):
 if __name__ == "__main__":
 
 	# print the whole matrix without scientific formatting
-	# np.set_printoptions(threshold = 10000000000000, suppress = True)
+	np.set_printoptions(threshold = 10000000000000, suppress = True)
 		   	  			  	 		  		  		    	 		 		   		 		  
 	test_code()  		   	  			  	 		  		  		    	 		 		   		 		  
