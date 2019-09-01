@@ -64,8 +64,8 @@ def test_code():
 	np.random.seed(gtid())  
 	bank_roll = 256   	  			  	 		  		  		    	 		 		   		 		  
 	
-	#exp1_figure1(win_prob)	  	 		  		  		    	 		 		   		 		  
-	#exp1_figure2_and_figure3(win_prob)
+	exp1_figure1(win_prob)	  	 		  		  		    	 		 		   		 		  
+	exp1_figure2_and_figure3(win_prob)
 	exp2_figure4_and_figure5(win_prob, bank_roll)
 
 
@@ -151,8 +151,10 @@ def exp1_figure2_and_figure3(win_prob):
 		curr_episode = simulator(win_prob, False, None)
 		result_array[index] = curr_episode
 	
+	"""
 	# print the last element of every episode
-	print(result_array[:, -1])
+	# print(result_array[:, -1])
+	"""
 
 	
 	### plot figure 2

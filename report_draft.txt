@@ -11,15 +11,25 @@ Our emperical results also supports this claim. In the 1000 episodes simulated, 
 Almost all of them reaches $80 winning cap by the first 230 trials
 
 2. 
-With a probability of winning at 9/19, after 1000 trials the expected number of winnning is about 474. 
+With a probability of winning at 9/19, The expected value for each bet is $1 * 9/19 = $0.474.
+After 1000 trials the expected number of winnning is about 1000 * $0.474 = $474. 
 For the martingale strategy, each time one wins, one adds $1 to the total winnings.
 So the expected winning is around $474
 
 3.
-No it does not. It is obvious from the graph, the standard deviation does not converge. 
-For exmaple, in figure 3, as the number of trials increases, the median + std and median - std line does not settle down to be parallel with the median until all of the episodes reaches the winning cap.
+It is obvious from the graph that the standard deviation does not converge until all of the episodes reaches the winning cap.
+For exmaple, in figure 3, as the number of trials increases, the median + std and median - std line does not settle down to be parallel with the median until all of the episodes reaches the winning cap at around 170th bet. After that point, the standard deviation is 0.
 
 4.
-#get the 1000 results and do a simple survey
-#use probability to calculate the probability to loose x censecutive rounds
-60.5% (605 out of 1000) reached $80 and 39.5% (395 out of 1000) reached $-256 at the end of 1000 trials
+The way to loose the game is to loose the bets 9 times in a roll, regardless of the amount of winning at that point.
+The probability for that to happen is (10/19)^9 = 0.003, which is not low.
+From the 1000 episodes, 60.5% (605 out of 1000) reached $80 and 39.5% (395 out of 1000) reached -$256 at the end of 1000 trials.
+
+5.
+From the probability calculated in question 4, the expected value after 1000 sequential bets = 60.5% * $80 + 39.5% * -$256 = -$50.
+
+6.
+It reaches a max and stabilizes afterwards.
+For example, in figure 5, the standard deviation reaches a max at 175th bet, and stabilizes, since the three lines, median, median + std and median - std line stays parallel afterwards.
+
+
