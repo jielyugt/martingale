@@ -1,2 +1,7 @@
 # plots generated
+
 figure*
+
+# .pages report
+
+*.pages

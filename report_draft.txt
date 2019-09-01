@@ -30,6 +30,6 @@ From the probability calculated in question 4, the expected value after 1000 seq
 
 6.
 It reaches a max and stabilizes afterwards.
-For example, in figure 5, the standard deviation reaches a max at 175th bet, and stabilizes, since the three lines, median, median + std and median - std line stays parallel afterwards.
+For example, in figure 5, the standard deviation reaches a max around 175th bet, and stabilizes, since then the three lines median, median + std and median - std line stays parallel.
 
 
